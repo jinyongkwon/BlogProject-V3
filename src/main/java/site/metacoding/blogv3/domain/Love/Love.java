@@ -1,4 +1,4 @@
-package site.metacoding.blogv3.domain.like;
+package site.metacoding.blogv3.domain.Love;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +25,7 @@ import site.metacoding.blogv3.domain.user.User;
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Like {
+public class Love {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
