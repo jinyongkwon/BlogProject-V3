@@ -6,6 +6,10 @@ server:
       charset: utf-8
 
 spring:
+  security:
+    user:
+      name: test
+      password: 1234
   mustache:
     expose-session-attributes: true
   datasource:
