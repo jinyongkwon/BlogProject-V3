@@ -1,4 +1,4 @@
-.my_navbar{
+.my_navbar {
     display: flex;
     justify-content: space-between;
     padding: 30px;
@@ -7,27 +7,45 @@
     border-bottom: 1px solid rgb(25, 25, 25);
 }
 
-.my_navbar_title{
+.my_navbar_title {
     color: rgb(25, 25, 25);
     font-size: 30px;
 }
 
-.my_icon_btn{
+.my_icon_btn {
     border: 1px solid rgb(25, 25, 25);
     padding: 15px;
     cursor: pointer;
 }
 
-.my_icon_btn:hover{
-   background-color: rgb(185, 185, 185);
+.my_icon_btn:hover {
+    background-color: rgb(185, 185, 185);
 }
 
-.my_profile_rounded_img{
+.my_profile_rounded_img {
     width: 30px;
-    height: 30px; 
+    height: 30px;
     border-radius: 15px;
 }
 
-.my_hidden{
+.my_hidden {
     display: none;
+}
+
+.my_secondary_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(185, 185, 185);
+    color: white;
+    margin: 5px 0;
+}
+
+.my_atag_none {
+    text-decoration: none;
 }
