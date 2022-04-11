@@ -1,13 +1,20 @@
 package site.metacoding.blogv3.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity // 해당 파일로 시큐리티가 활성화
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean // 스프링의 디폴트 해쉬 알고리즘이 BCrypt이다!!
+    public BCryptPasswordEncoder encoder() { // IOC에 등록해서 시큐리티한테 패스워드 암호화 알고리즘을 알려줌.
+        return new BCryptPasswordEncoder();
+    }
 
     // 인증 설정하는 메서드
     @Override

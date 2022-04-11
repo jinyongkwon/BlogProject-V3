@@ -14,9 +14,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -31,7 +33,7 @@ public class User {
     private String username;
 
     // 1234 -> SHA256(해시 알고리즘) -> AB4536HCDY325 -> 이렇게 안하면 시큐리티 거부
-    @Column(length = 20, nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
 
     @Column(length = 60, nullable = false)
