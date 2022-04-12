@@ -32,6 +32,9 @@ public class User {
     @Column(length = 20, nullable = false, unique = true)
     private String username;
 
+    // admin, manager, guest(이메일 체크 안됨), user(이메일 체크 됨) 어떤권한인지 확인.
+    // private String role;
+
     // 1234 -> SHA256(해시 알고리즘) -> AB4536HCDY325 -> 이렇게 안하면 시큐리티 거부
     @Column(length = 100, nullable = false)
     private String password;

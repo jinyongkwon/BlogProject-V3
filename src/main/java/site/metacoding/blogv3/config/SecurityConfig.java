@@ -1,11 +1,19 @@
 package site.metacoding.blogv3.config;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @EnableWebSecurity // 해당 파일로 시큐리티가 활성화
 @Configuration
@@ -26,7 +34,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll() // 그 외 주소는 모두 허용
                 .and()
                 .formLogin() // formLogin 커스터마이징
-                .loginPage("/loginForm") // 로그인 페이지의 주소를 /loginFrom으로 설정
+                // .usernameParameter("user") // username을 user로 키값을 변경
+                // .passwordParameter("pwd") // password를 pwd로 키값을 변경.
+                .loginPage("/login-form") // 로그인 페이지의 주소를 /loginFrom으로 설정
+                .loginProcessingUrl("/login") // login 프로세스를 탐
+                // .failureHandler(new AuthenticationFailureHandler() { // 로그인 실패
+                // @Override
+                // public void onAuthenticationFailure(HttpServletRequest request,
+                // HttpServletResponse response,
+                // AuthenticationException exception) throws IOException, ServletException {
+                // System.out.println("로그인 실패 !!!");
+                // response.sendRedirect("/");
+                // }
+                // })
+                // .successHandler(null) // 로그인 성공
                 .defaultSuccessUrl("/"); // 로그인 성공시 /로 이동
     }
 }

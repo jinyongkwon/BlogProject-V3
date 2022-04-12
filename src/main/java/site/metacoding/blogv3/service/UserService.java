@@ -21,7 +21,6 @@ public class UserService {
         String rawPassword = user.getPassword(); // 1234
         String encPassword = bCryptPasswordEncoder.encode(rawPassword); // 해쉬 알고리즘
         user.setPassword(encPassword);
-
         userRepository.save(user);
     }
 }
