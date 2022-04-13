@@ -17,11 +17,23 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: green
       password: green1234
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 아이디
+    password: 비밀번호
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
