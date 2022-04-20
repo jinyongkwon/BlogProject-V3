@@ -70,7 +70,26 @@
 }
 
 .my_atag_none {
-    text-decoration: none;
+    text-decoration-line: none;
+    color: black;
+}
+
+.my_atag_none:hover {
+    text-decoration-line: none;
+}
+
+.my_active_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(255, 85, 68);
+    color: white;
+    margin: 5px 0;
 }
 
 .my_success_btn {
@@ -90,6 +109,14 @@
 .my_elipse {
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.my_icon_rounded_btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    background-color: rgb(185, 185, 185);
 }
 
 @media (max-width: 420px) {
