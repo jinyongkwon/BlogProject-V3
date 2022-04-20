@@ -1,6 +1,12 @@
-.my_text_title {}
+.my_text_title {
+    font-size: 30px;
+    font-weight: 800;
+}
 
-.my_text_subtitle {}
+.my_text_subtitle {
+    font-size: 13px;
+    font-weight: 800;
+}
 
 .my_text_menu_title {
     font-size: 20px;
@@ -17,8 +23,14 @@
 }
 
 
-.my_text_body_lg {}
+.my_text_body_lg {
+    font-size: 15px;
+}
 
-.my_text_body_md {}
+.my_text_body_md {
+    font-size: 13px;
+}
 
-.my_text_body_sm {}
+.my_text_body_sm {
+    font-size: 13px;
+}
