@@ -43,7 +43,7 @@ public class UserController {
         return "redirect:/login-form";
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/s/user/{id}")
     public String updateForm(@PathVariable Integer id) {
         return "/user/updateForm";
     }
