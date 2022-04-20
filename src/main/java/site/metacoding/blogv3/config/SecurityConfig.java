@@ -1,19 +1,13 @@
 package site.metacoding.blogv3.config;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+
+import site.metacoding.blogv3.handler.LoginSuccessHandler;
 
 @EnableWebSecurity // 해당 파일로 시큐리티가 활성화
 @Configuration
@@ -47,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // response.sendRedirect("/");
                 // }
                 // })
-                // .successHandler(null) // 로그인 성공
-                .defaultSuccessUrl("/"); // 로그인 성공시 /로 이동
+                .successHandler(new LoginSuccessHandler()); // 로그인 성공
+        // .defaultSuccessUrl("/"); // 로그인 성공시 /로 이동
     }
 }

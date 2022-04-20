@@ -1,10 +1,6 @@
 package site.metacoding.blogv3.web;
 
-import java.security.Principal;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -15,19 +11,6 @@ public class MainController {
 
     @GetMapping({ "/" })
     public String main(@AuthenticationPrincipal LoginUser loginUser) {
-
-        // System.out.println(loginUser.getUsername());
-        // System.out.println(loginUser.getUser().getUsername());
-
-        // LoginUser lu = (LoginUser)
-        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        // System.out.println(lu.getUser().getEmail());
-
-        if (loginUser == null) {
-            return "main";
-        } else {
-            return "redirect:/user/" + loginUser.getUser().getId() + "/post";
-        }
-
+        return "main";
     }
 }
