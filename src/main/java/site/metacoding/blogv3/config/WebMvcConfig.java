@@ -4,8 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import site.metacoding.blogv3.config.intercepter.SessionIntercepter;
-
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 

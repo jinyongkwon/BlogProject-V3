@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import site.metacoding.blogv3.domain.user.User;
 import site.metacoding.blogv3.domain.user.UserRepository;
 
-import site.metacoding.blogv3.handler.ex.CustomException;
-
 @RequiredArgsConstructor
 @Service // IOC 컨테이너 등록됨.
 public class LoginService implements UserDetailsService {
