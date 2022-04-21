@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -38,9 +40,11 @@ public class PostService {
     public void 게시글쓰기(PostWriteReqDto postWriteReqDto, User principal) {
 
         System.out.println(postWriteReqDto);
+        String thumnail = null;
         // UUID로 파일쓰고 경로 리턴 받기.
-        String thumnail = UtilFileUpload.write(uploadFolder, postWriteReqDto.getThumnailFile());
-
+        if (!postWriteReqDto.getThumnailFile().isEmpty()) {
+            thumnail = UtilFileUpload.write(uploadFolder, postWriteReqDto.getThumnailFile());
+        }
         // Category category = new Category();
         // category.setId(postWriteReqDto.getCategoryId());
 
@@ -59,10 +63,18 @@ public class PostService {
 
     }
 
-    public PostRespDto 게시글목록보기(int userId) {
-        List<Post> postsEntity = postRepository.findByUserId(userId);
+    public PostRespDto 게시글목록보기(Integer userId, Pageable pageable) {
+        Page<Post> postsEntity = postRepository.findByUserId(userId, pageable);
         List<Category> categorysEntity = categoryRepository.findByUserId(userId);
+        PostRespDto postRespDto = new PostRespDto(
+                postsEntity,
+                categorysEntity);
+        return postRespDto;
+    }
 
+    public PostRespDto 게시글카테고리별보기(Integer userId, Integer categoryId, Pageable pageable) {
+        Page<Post> postsEntity = postRepository.findByUserIdAndCategoryId(userId, categoryId, pageable);
+        List<Category> categorysEntity = categoryRepository.findByUserId(userId);
         PostRespDto postRespDto = new PostRespDto(
                 postsEntity,
                 categorysEntity);
