@@ -26,6 +26,12 @@ public class PostController {
 
     private final PostService postService;
 
+    @GetMapping("/user/{userId}/post/{postId}")
+    public String detail(Model model, @AuthenticationPrincipal LoginUser loginUser) {
+
+        return "/post/detail";
+    }
+
     @PostMapping("/s/post")
     public String write(PostWriteReqDto postWriteReqDto, @AuthenticationPrincipal LoginUser loginUser) {
 
