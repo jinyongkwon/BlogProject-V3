@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import site.metacoding.blogv3.handler.LoginSuccessHandler;
 
+import site.metacoding.blogv3.handler.LoginSuccessHandler;
+
 @EnableWebSecurity // 해당 파일로 시큐리티가 활성화
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
