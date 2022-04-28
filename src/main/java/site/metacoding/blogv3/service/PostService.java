@@ -116,7 +116,8 @@ public class PostService {
                 pageOwnerId,
                 postsEntity.getNumber() - 1,
                 postsEntity.getNumber() + 1,
-                pageNumbers);
+                pageNumbers,
+                0L);
 
         // 방문자 카운트 증가.
         Optional<User> pageOwnerOp = userRepository.findById(pageOwnerId);
@@ -126,6 +127,8 @@ public class PostService {
             if (visitOp.isPresent()) {
                 Visit visitEntity = visitOp.get();
                 Long totalCount = visitEntity.getTotalCount();
+                // Dto에 방문자수 담기 (request에서 ip주소 받아서 동일하면 증가 안시키는 로직이 필요함)
+                postRespDto.setTotalCount(totalCount);
                 visitEntity.setTotalCount(totalCount + 1);
             } else {
                 log.error("미친 심각", "회원가입할때 Visit가 안만들어지는 심각한 오류가 있습니다."); // yml에서 level을 설정해서 로그를 출력할지 말지 선택가능
@@ -154,7 +157,30 @@ public class PostService {
                 pageOwnerId,
                 postsEntity.getNumber() - 1,
                 postsEntity.getNumber() + 1,
-                pageNumbers);
+                pageNumbers,
+                0L);
+        // 방문자 카운트 증가.
+        Optional<User> pageOwnerOp = userRepository.findById(pageOwnerId);
+        if (pageOwnerOp.isPresent()) {
+            User pageOwnerEntity = pageOwnerOp.get();
+            Optional<Visit> visitOp = visitRepository.findById(pageOwnerEntity.getId());
+            if (visitOp.isPresent()) {
+                Visit visitEntity = visitOp.get();
+                Long totalCount = visitEntity.getTotalCount();
+                // Dto에 방문자수 담기 (request에서 ip주소 받아서 동일하면 증가 안시키는 로직이 필요함)
+                postRespDto.setTotalCount(totalCount);
+                visitEntity.setTotalCount(totalCount + 1);
+            } else {
+                log.error("미친 심각", "회원가입할때 Visit가 안만들어지는 심각한 오류가 있습니다."); // yml에서 level을 설정해서 로그를 출력할지 말지 선택가능
+                // 에러 터지면 해야할것
+                // sms 메시지 전송
+                // email 전송
+                // file 쓰기.
+                throw new CustomException("일시적 문제가 생겼습니다. 관리자에게 문의해주세요.");
+            }
+        } else {
+            throw new CustomException("해당 블로그는 없는 페이지입니다.");
+        }
         return postRespDto;
     }
 }
