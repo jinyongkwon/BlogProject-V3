@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -90,51 +88,42 @@ public class PostService {
 
     @Transactional
     public PostDetailRespDto 게시글상세보기(Integer id, User principal) {
-        // 코드가 너무 지저분함 딱딱딱딱 맞추는것이 필요함
-
-        // 1. 권한체크
-        // 2. 게시글 가져오기
-        // 3. 방문자수 증가하기
-        // 4. 리턴값 만들기
         PostDetailRespDto postDetailRespDto = new PostDetailRespDto();
+        boolean isAuth = false;
+        Post postEntity = null;
 
-        // 해당 페이지의 postId를 찾아서
-        Integer postId = id;
-        // 해당 페이지의 주인 userId가 무엇인지 알아야함.
-        Integer pageOwnerId = null;
-        // 로그인한 사용자의 userId를 알아야함.
-        Integer loginUserId = principal.getId();
-
+        // 1. 게시글 가져오기
         Optional<Post> postOp = postRepository.findById(id);
         if (postOp.isPresent()) {
-            Post postEntity = postOp.get();
-            postDetailRespDto.setPost(postEntity);
-            pageOwnerId = postEntity.getUser().getId();
-            // 두 값을 비교해서 동일하면 isPageOwner에 true를 추가해준다.
-            if (pageOwnerId == loginUserId) {
-                postDetailRespDto.setPageOwner(true);
-            } else {
-                postDetailRespDto.setPageOwner(false);
-            }
-            // 방문자 카운트 증가.
-            Optional<Visit> visitOp = visitRepository.findById(postEntity.getUser().getId());
-            if (visitOp.isPresent()) {
-                Visit visitEntity = visitOp.get();
-                Long totalCount = visitEntity.getTotalCount();
-                visitEntity.setTotalCount(totalCount + 1);
-            } else {
-                log.error("미친 심각", "회원가입할때 Visit가 안만들어지는 심각한 오류가 있습니다."); // yml에서 level을 설정해서 로그를 출력할지 말지 선택가능
-                // 에러 터지면 해야할것
-                // sms 메시지 전송
-                // email 전송
-                // file 쓰기.
-                throw new CustomException("일시적 문제가 생겼습니다. 관리자에게 문의해주세요.");
-            }
-
-            return postDetailRespDto;
+            postEntity = postOp.get();
         } else {
             throw new CustomException("해당 게시글을 찾을 수 없습니다");
         }
+
+        // 2. 권한체크
+        if (principal.getId() == postEntity.getUser().getId()) {
+            isAuth = true;
+        }
+
+        // 3. 방문자수 증가하기
+        Optional<Visit> visitOp = visitRepository.findById(postEntity.getUser().getId());
+        if (visitOp.isPresent()) {
+            Visit visitEntity = visitOp.get();
+            Long totalCount = visitEntity.getTotalCount();
+            visitEntity.setTotalCount(totalCount + 1);
+        } else {
+            log.error("미친 심각", "회원가입할때 Visit이 안 만들어지는 심각한 오류가 있습니다.");
+            // sms 메시지 전송
+            // email 전송
+            // file 쓰기
+            throw new CustomException("일시적 문제가 생겼습니다. 관리자에게 문의해주세요.");
+        }
+
+        // 4. 리턴값 만들기
+        postDetailRespDto.setPost(postEntity);
+        postDetailRespDto.setPageOwner(isAuth);
+
+        return postDetailRespDto;
     }
 
     public List<Category> 게시글쓰기화면(User principal) {

@@ -2,7 +2,6 @@ package site.metacoding.blogv3.web;
 
 import java.util.List;
 
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import lombok.RequiredArgsConstructor;
 import site.metacoding.blogv3.config.auth.LoginUser;
 import site.metacoding.blogv3.domain.category.Category;
-import site.metacoding.blogv3.domain.post.Post;
 import site.metacoding.blogv3.domain.user.User;
 import site.metacoding.blogv3.handler.ex.CustomException;
 import site.metacoding.blogv3.service.PostService;
