@@ -1,10 +1,10 @@
-.my_nav_slider{
+.my_nav_slider {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.my_nav_slider_visit{
+.my_nav_slider_visit {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -63,6 +63,13 @@
     width: 50px;
     height: 50px;
     border-radius: 25px;
+    cursor: pointer;
+}
+
+.my_profile_rounded_img_btn_lg {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
     cursor: pointer;
 }
 

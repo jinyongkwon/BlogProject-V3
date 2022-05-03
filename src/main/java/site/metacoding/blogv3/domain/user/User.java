@@ -42,6 +42,9 @@ public class User {
     @Column(length = 60, nullable = false)
     private String email;
 
+    @Column(nullable = true)
+    private String progileImg;
+
     @CreatedDate
     private LocalDateTime createDate;
     @LastModifiedDate
