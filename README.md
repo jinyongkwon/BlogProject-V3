@@ -1,4 +1,4 @@
-# 스프링부트 JPA 블로그 V3
+# 스프링부트 JPA 블로그 V3 - GREEN Computer
 
 ### 1. 의존성
 - devtools
@@ -6,7 +6,7 @@
 - mustache
 - lombok
 - jpa
-- mysqldb
+- mariadb
 - security
 - validation
 
@@ -18,27 +18,26 @@ GRANT ALL PRIVILEGES ON greendb.* TO 'green'@'%';
 ```
 
 ### 3. 에디터
- - https://quilljs.com/
+- https://quilljs.com/
 
- ### 4. 댓글 
- - https://livere.com/apply 
+### 4. 댓글
+- https://livere.com/
 
- ### 5. 주소 요청 이런식으로!!
- ```txt
- localhost:8080/ (메인페이지 - 글 있는 곳 아님)
-localhost:8080/user/{userId}/post 
-localhost:8080/user/1 <- 마이페이지
+### 5. 주소 요청 이런식으로 해볼까?
+```txt
+localhost:8080/ (메인페이지 - 글 있는 곳 아님)
+localhost:8080/user/{userId}/post
 localhost:8080/user/{userId}/post/{postId}
-localhost:8080/user/{userId}/category/{title} 
- ```
+localhost:8080/user/{userId}/category/{title}
+```
 
- ### 6. 모델링
- ```sql
- VIsit
+### 6. 모델링
+```sql
+Visit
 id
 userId
 totalCount
-credateDate
+createDate
 updateDate
 
 User
@@ -55,37 +54,39 @@ content
 thumnail
 userId
 categoryId
-credateDate
+createDate
 updateDate
 
-Love
+Like
 id
 postId
 userId
-credateDate
+createDate
 updateDate
 
 Category
 id
 title
 userId
-credateDate
+createDate
 updateDate
 ```
 
 ### 7. 기능정리
-- 카테고리 등록
-- 글쓰기
-- 글목록보기
-- 페이징
-- 글상세보기
-- 검색
-- 글삭제
-- 글수정
 - 댓글 (라이브러리 사용)
+- 좋아요
+- AOP 처리
+- 로그관리 (Log4j)
+- 단위테스트
+- 배포
+- 검색
+- 프로필 사진 변경
+- 글수정
+- 회원정보 수정
 
-- 프로필 사진 업로드 (회원가입시)
-- 회원수정
+### Gradle depenency update
+'''txt
+./gradlew --refresh-dependencie
 '''
 
 
@@ -93,6 +94,7 @@ updateDate
 ```sql
 -- currentPage, totalPages
 SELECT TRUE last FROM dual;
+
 SELECT 
 true LAST,
 false FIRST,
@@ -106,3 +108,5 @@ ORDER BY p.id DESC
 LIMIT 0, 3;
 -- LIMIT (0*3), 3;
 ```
+
+### 로그변경 테스트
