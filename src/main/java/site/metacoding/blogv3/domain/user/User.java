@@ -43,7 +43,7 @@ public class User {
     private String email;
 
     @Column(nullable = true)
-    private String progileImg;
+    private String profileImg;
 
     @CreatedDate
     private LocalDateTime createDate;

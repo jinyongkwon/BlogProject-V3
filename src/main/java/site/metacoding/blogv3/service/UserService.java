@@ -2,16 +2,22 @@ package site.metacoding.blogv3.service;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import site.metacoding.blogv3.domain.user.User;
 import site.metacoding.blogv3.domain.user.UserRepository;
 import site.metacoding.blogv3.domain.visit.Visit;
 import site.metacoding.blogv3.domain.visit.VisitRepository;
+import site.metacoding.blogv3.handler.ex.CustomApiException;
 import site.metacoding.blogv3.handler.ex.CustomException;
+import site.metacoding.blogv3.util.UtilFileUpload;
 import site.metacoding.blogv3.util.email.EmailUtil;
 import site.metacoding.blogv3.web.dto.user.PasswordResetReqDto;
 
@@ -24,6 +30,22 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailUtil emailUtil;
+
+    @Value("${file.path}")
+    private String uploadFolder;
+
+    @Transactional
+    public void 프로파일이미지변경(MultipartFile file, Integer userId, HttpSession session) {
+        String profileImg = UtilFileUpload.write(uploadFolder, file);
+        Optional<User> userOp = userRepository.findById(userId);
+        if (userOp.isPresent()) {
+            User userEntity = userOp.get();
+            userEntity.setProfileImg(profileImg);
+            session.setAttribute("principal", userEntity);
+        } else {
+            throw new CustomApiException("이미지를 찾을수가 없습니다.");
+        }
+    }
 
     @Transactional
     public void 회원가입(User user) {
