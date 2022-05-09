@@ -25,11 +25,11 @@
 
     <script>
         $("#testChange").change((event) => {
-            console.log(event);
+            //console.log(event);
         });
 
         $("#fileChange").change((event) => {
-            // console.log(event.target.files[0]);
+            //console.log(event.target.files[0]);
             let f = event.target.files[0];
             if (!f.type.match("image.*")) { // type이 image로 시작하는게 아니면 실행!!
                 alert("이미지를 선택해주세요!")
