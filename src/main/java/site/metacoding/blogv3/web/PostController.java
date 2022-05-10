@@ -30,6 +30,17 @@ public class PostController {
 
     private final PostService postService;
 
+    // /s/api/post/{id}/love
+    @PostMapping("/s/api/post/{id}/love")
+    public ResponseEntity<?> love(@PathVariable Integer id, @AuthenticationPrincipal LoginUser loginUser) {
+        return null;
+    }
+
+    @DeleteMapping("/s/api/post/{id}/love")
+    public ResponseEntity<?> unLove(@PathVariable Integer id, @AuthenticationPrincipal LoginUser loginUser) {
+        return null;
+    }
+
     @DeleteMapping("/s/api/post/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id, @AuthenticationPrincipal LoginUser loginUser) {
         User principal = loginUser.getUser();

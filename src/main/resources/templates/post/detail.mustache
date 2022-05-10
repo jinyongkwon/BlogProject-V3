@@ -11,8 +11,19 @@
     <div class="my_post_detail_content">
         {{{data.post.content}}}
     </div>
-    <div>
+    <div class="my_post_info_box d-flex">
+        <div class="my_post_info">
+            {{#data.isLove}}
+            <i class="fa-solid fa-heart my_like my_mr_sm_1" id="heart-{{data.post.id}}"
+                onclick="postLikeClick('{{data.post.id}}')"></i>
+            {{/data.isLove}}
+            {{^data.isLove}}
+            <i class="far fa-heart my_like my_mr_sm_1" id="heart-{{data.post.id}}"
+                onclick="postLikeClick('{{data.post.id}}')"></i>
+            {{/data.isLove}}
 
+            by <b>{{data.post.user.username}}</b> <span class="my_text_body_sm">{{data.post.formatCreateDate}}</span>
+        </div>
     </div>
 
     {{#data.isPageOwner}}

@@ -1,3 +1,24 @@
+let postLikeClick = (id) => {
+    let isLike = $(`#heart-${id}`).hasClass("fa-solid");
+    if (isLike) {
+        postUnLike(id);
+    } else {
+        postLike(id);
+    }
+}
+
+let postLike = (id) => {
+    // fetch();
+    $(`#heart-${id}`).removeClass("far");
+    $(`#heart-${id}`).addClass("fa-solid");
+}
+
+let postUnLike = (id) => {
+    // fetch();
+    $(`#heart-${id}`).removeClass("fa-solid");
+    $(`#heart-${id}`).addClass("far");
+}
+
 // 게시글 삭제, 권한체크후 삭제 DELETE : /s/api/post/1
 $("#btn-delete").click(() => {
     postDelete();
