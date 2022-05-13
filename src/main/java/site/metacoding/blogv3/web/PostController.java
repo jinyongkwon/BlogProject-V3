@@ -31,14 +31,18 @@ public class PostController {
     private final PostService postService;
 
     // /s/api/post/{id}/love
-    @PostMapping("/s/api/post/{id}/love")
-    public ResponseEntity<?> love(@PathVariable Integer id, @AuthenticationPrincipal LoginUser loginUser) {
-        return null;
+    @PostMapping("/s/api/post/{postId}/love")
+    public ResponseEntity<?> love(@PathVariable Integer postId, @AuthenticationPrincipal LoginUser loginUser) {
+        postService.좋아요(postId, loginUser.getUser());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/s/api/post/{id}/love")
-    public ResponseEntity<?> unLove(@PathVariable Integer id, @AuthenticationPrincipal LoginUser loginUser) {
-        return null;
+    @DeleteMapping("/s/api/post/{postId}/love/{loveId}")
+    public ResponseEntity<?> unLove(@PathVariable Integer loveId, @AuthenticationPrincipal LoginUser loginUser) {
+        // 로그인한 유저의 userId
+        // 러브에 있는 userId
+        postService.좋아요취소(loveId, loginUser.getUser());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/s/api/post/{id}")

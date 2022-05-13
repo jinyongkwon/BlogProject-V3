@@ -49,10 +49,32 @@ public class PostService extends PostBasicService {
     private final EntityManager em; // IoC 컨테이너에서 가져옴.
 
     @Transactional
+    public Love 좋아요(Integer postId, User principal) {
+
+        // 숙제 Love를 Dto에 옮겨서 비영속화된 데이터를 응답하기.
+        Post postEntity = postFindById(postId);
+        Love love = new Love();
+        love.setUser(principal);
+        love.setPost(postEntity);
+        return loveRepository.save(love);
+    }
+
+    @Transactional
+    public void 좋아요취소(Integer loveId, User principal) {
+        // 권한체크
+        Love loveEntity = loveFindById(loveId);
+        if (loveEntity.getUser().getId() == principal.getId()) {
+            loveRepository.deleteById(loveId);
+        } else {
+            throw new CustomApiException("좋아요를 취소할수 없습니다.");
+        }
+    }
+
+    @Transactional
     public void 게시글삭제(Integer id, User principal) {
 
         // 게시글 확인.
-        Post postEntity = basicFindById(id);
+        Post postEntity = postFindById(id);
 
         // 미리 필요한 애들을 다 땡겨내림 - Lazy Loading을 미리 하기
         // Hibernate.initialize(postEntity);
@@ -73,7 +95,7 @@ public class PostService extends PostBasicService {
         PostDetailRespDto postDetailRespDto = new PostDetailRespDto();
 
         // 게시글 찾기
-        Post postEntity = basicFindById(id);
+        Post postEntity = postFindById(id);
 
         // 방문자수 증가
         visitIncrease(postEntity.getUser().getId());
@@ -94,7 +116,7 @@ public class PostService extends PostBasicService {
         PostDetailRespDto postDetailRespDto = new PostDetailRespDto();
 
         // 게시글 찾기
-        Post postEntity = basicFindById(id);
+        Post postEntity = postFindById(id);
 
         // 권한체크
         boolean isAuth = authCheck(postEntity.getUser().getId(), principal.getId());
@@ -195,8 +217,19 @@ public class PostService extends PostBasicService {
         return postRespDto;
     }
 
+    // 책임 : 아이디로 좋아요 찾기
+    private Love loveFindById(Integer loveId) {
+        Optional<Love> loveOp = loveRepository.findById(loveId);
+        if (loveOp.isPresent()) {
+            Love loveEntity = loveOp.get();
+            return loveEntity;
+        } else {
+            throw new CustomApiException("해당 게시글이 존재하지 않습니다");
+        }
+    }
+
     // 책임 : 아이디로 게시글 찾기
-    private Post basicFindById(Integer postId) {
+    private Post postFindById(Integer postId) {
         Optional<Post> postOp = postRepository.findById(postId);
         if (postOp.isPresent()) {
             Post postEntity = postOp.get();
