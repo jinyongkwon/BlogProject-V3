@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class LoveRespDto {
     private Integer loveId;
     // 클래스가 필요하면 내부클래스를 만들어서 해야함.
-    private PostDto post;;
+    private PostDto post;
 
     @Data
     public class PostDto {

@@ -1,22 +1,41 @@
-let postLikeClick = (id) => {
-    let isLike = $(`#heart-${id}`).hasClass("fa-solid");
+let postLikeClick = (postId) => {
+
+    let principalId = $("#principal-id").val();
+    if (principalId == undefined) {
+        alert("로그인이 필요합니다.");
+        location.href = "/login-form";
+        return; // 이걸 안붙이면 밑에 코드도 다 실행됨.
+    }
+
+    let isLike = $(`#my-heart`).hasClass("fa-solid");
     if (isLike) {
-        postUnLike(id);
+        postUnLike(postId);
     } else {
-        postLike(id);
+        postLike(postId);
     }
 }
 
-let postLike = (id) => {
-    // fetch();
-    $(`#heart-${id}`).removeClass("far");
-    $(`#heart-${id}`).addClass("fa-solid");
+let postLike = async (postId) => {
+    let response = await fetch(`/s/api/post/${postId}/love`, {
+        method: "POST"
+    })
+    let responseParse = await response.json();
+    if (response.status == 201) {
+        $("#my-loveId").val(responseParse.loveId);
+        $(`#my-heart`).removeClass("far");
+        $(`#my-heart`).addClass("fa-solid");
+    }
 }
 
-let postUnLike = (id) => {
-    // fetch();
-    $(`#heart-${id}`).removeClass("fa-solid");
-    $(`#heart-${id}`).addClass("far");
+let postUnLike = async (postId) => {
+    let loveId = $("#my-loveId").val()
+    let response = await fetch(`/s/api/post/${postId}/love/${loveId}`, {
+        method: "DELETE"
+    });
+    if (response.status == 200) {
+        $(`#my-heart`).removeClass("fa-solid");
+        $(`#my-heart`).addClass("far");
+    }
 }
 
 // 게시글 삭제, 권한체크후 삭제 DELETE : /s/api/post/1

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -101,10 +100,10 @@ public class PostService extends PostBasicService {
 
     }
 
+    // 비로그인 상태일때
     @Transactional
     public PostDetailRespDto 게시글상세보기(Integer id) {
         PostDetailRespDto postDetailRespDto = new PostDetailRespDto();
-
         // 게시글 찾기
         Post postEntity = postFindById(id);
 
@@ -115,8 +114,7 @@ public class PostService extends PostBasicService {
         postDetailRespDto.setPost(postEntity);
         postDetailRespDto.setPageOwner(false);
 
-        // 좋아요 유무 추가하기 (로그인한 사람이 해당 게시글을 좋아하는지)
-        postDetailRespDto.setLove(false);
+        // 좋아요 유무 추가 => 로그인 안했으니 무조건 null => 코드 적을필요 x
 
         return postDetailRespDto;
     }
@@ -143,10 +141,9 @@ public class PostService extends PostBasicService {
         // (1) 로그인한 사람의 userId와 상세보기한 postId로 Love 테이블에서 slect해서 row가 있으면 true
         Optional<Love> loveOp = loveRepository.mFindByUserIdAndPostId(principal.getId(), id);
         if (loveOp.isPresent()) {
-            postDetailRespDto.setLove(true);
-        } else {
-            postDetailRespDto.setLove(false);
+            postDetailRespDto.setLoveId(loveOp.get().getId());
         }
+        // 없으면 무조건 null => 코드 적을필요 x
 
         return postDetailRespDto;
     }

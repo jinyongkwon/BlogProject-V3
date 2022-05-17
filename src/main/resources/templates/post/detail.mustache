@@ -2,6 +2,7 @@
 <div class="container">
     <input type="hidden" id="postId" value="{{data.post.id}}">
     <input type="hidden" id="pageOwnerId" value="{{data.post.user.id}}">
+    <input type="hidden" id="my-loveId" value="{{#data.loveId}}{{data.loveId}}{{/data.loveId}}">
 
     <div class="my_post_detail_title">
         <h2>{{data.post.title}}</h2>
@@ -13,14 +14,13 @@
     </div>
     <div class="my_post_info_box d-flex">
         <div class="my_post_info">
-            {{#data.isLove}}
-            <i class="fa-solid fa-heart my_like my_mr_sm_1" id="heart-{{data.post.id}}"
+            {{#data.loveId}}
+            <i class="fa-solid fa-heart my_like my_mr_sm_1" id="my-heart"
                 onclick="postLikeClick('{{data.post.id}}')"></i>
-            {{/data.isLove}}
-            {{^data.isLove}}
-            <i class="far fa-heart my_like my_mr_sm_1" id="heart-{{data.post.id}}"
-                onclick="postLikeClick('{{data.post.id}}')"></i>
-            {{/data.isLove}}
+            {{/data.loveId}}
+            {{^data.loveId}}
+            <i class="far fa-heart my_like my_mr_sm_1" id="my-heart" onclick="postLikeClick('{{data.post.id}}')"></i>
+            {{/data.loveId}}
 
             by <b>{{data.post.user.username}}</b> <span class="my_text_body_sm">{{data.post.formatCreateDate}}</span>
         </div>
