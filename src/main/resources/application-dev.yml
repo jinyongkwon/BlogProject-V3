@@ -46,3 +46,8 @@ spring:
 
 file:
   path: C:/Users/green/upload/ 
+
+ logging:
+  level:
+  '[org.springframework.web]': DEBUG
+  '[or.hibernate]': DEBUG
