@@ -38,5 +38,5 @@ file:
 
 logging:
   level:
-  '[org.springframework.web]': INFO
-  '[or.hibernate]': INFO
+    '[org.springframework.web]': DEBUG
+    '[or.hibernate]': DEBUG

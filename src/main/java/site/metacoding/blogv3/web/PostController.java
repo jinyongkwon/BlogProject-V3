@@ -72,6 +72,8 @@ public class PostController {
 
         postService.게시글쓰기(postWriteReqDto, loginUser.getUser());
 
+        System.out.println("실행됨");
+
         return "redirect:/user/" + loginUser.getUser().getId() + "/post";
     }
 

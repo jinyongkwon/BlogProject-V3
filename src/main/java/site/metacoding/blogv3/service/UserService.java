@@ -48,7 +48,7 @@ public class UserService {
     }
 
     @Transactional
-    public void 회원가입(User user) {
+    public User 회원가입(User user) {
         // 1. save한번
         String rawPassword = user.getPassword(); // 1234
         String encPassword = bCryptPasswordEncoder.encode(rawPassword); // 해쉬 알고리즘
@@ -60,6 +60,7 @@ public class UserService {
         visit.setTotalCount(0L); // Long타입은 L을 넣어줘야한다.
         visit.setUser(userEntity); // 가짜 유저를 넣어서 터트리고 테스트 해보기.
         visitRepository.save(visit);
+        return userEntity;
     }
 
     public boolean 유저네임중복체크(String username) {
