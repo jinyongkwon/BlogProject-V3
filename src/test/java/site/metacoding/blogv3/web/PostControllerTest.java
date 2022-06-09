@@ -8,26 +8,28 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import site.metacoding.blogv3.config.auth.LoginUser;
 import site.metacoding.blogv3.domain.category.Category;
+import site.metacoding.blogv3.domain.category.CategoryRepository;
 import site.metacoding.blogv3.domain.user.User;
-import site.metacoding.blogv3.service.CategoryService;
 import site.metacoding.blogv3.web.dto.post.PostWriteReqDto;
 
 @ActiveProfiles("dev")
@@ -40,7 +42,7 @@ public class PostControllerTest {
     private WebApplicationContext context;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryRepository categoryRepository;
 
     @BeforeEach
     public void setup() {
@@ -67,34 +69,29 @@ public class PostControllerTest {
     public void write_테스트() throws Exception {
         // given
         // 세션에 principal담기
-        TestUserDetailsService userDetailsService = new TestUserDetailsService();
-        LoginUser loginUser = (LoginUser) userDetailsService.loadUserByUsername("ssar");
-        User principal = loginUser.getUser();
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("principal", principal);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 
         // principal에다가 스프링 카테고리 생성
-        Category category = Category.builder().id(1).title("스프링").user(principal).build();
-        Category categoryEntity = categoryService.카테고리등록(category);
+        // Category category = Category.builder().title("스프링").user(principal).build();
+        // Category categoryEntity = categoryRepository.save(category);
+        // DB에는 들어가있지만 commit은 안된상태라서 id를 지정해주지 않으면 id를 찾지못함.
+        // => DBInitializer를 사용해서 test를 할때 DB에 자동으로 Save를 해주는것으로 해결
 
         // postWriteReqDto작성
         PostWriteReqDto postWriteReqDto = PostWriteReqDto.builder()
-                .categoryId(categoryEntity.getId())
+                .categoryId(1) // id를 지정해주지 않을경우 commit이 안되서 아직안보임 => 즉 유령데이터.
                 .title("스프링1강")
                 .content("재밌음")
                 .build();
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("postWriteReqDto", postWriteReqDto.toString());
-        params.add("loginUser", loginUser.toString());
 
         // when
         ResultActions resultActions = mockMvc.perform(
                 post("/s/post")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .params(params)
-                        .session(session));
+                        .param("title", postWriteReqDto.getTitle())
+                        .param("content", postWriteReqDto.getContent())
+                        .param("categoryId", postWriteReqDto.getCategoryId().toString()));
 
         // then
         resultActions
@@ -109,6 +106,8 @@ public class PostControllerTest {
     }
 }
 
+@Service
+@Profile("test")
 class TestUserDetailsService implements UserDetailsService {
 
     @Override
