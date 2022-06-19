@@ -8,17 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -27,9 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import site.metacoding.blogv3.config.auth.LoginUser;
-import site.metacoding.blogv3.domain.category.Category;
 import site.metacoding.blogv3.domain.category.CategoryRepository;
-import site.metacoding.blogv3.domain.user.User;
 import site.metacoding.blogv3.web.dto.post.PostWriteReqDto;
 
 @ActiveProfiles("dev")
@@ -104,22 +96,4 @@ public class PostControllerTest {
 
     public void postList_테스트() {
     }
-}
-
-@Service
-@Profile("test")
-class TestUserDetailsService implements UserDetailsService {
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User principal = User.builder()
-                .id(1)
-                .username("ssar")
-                .password("1234")
-                .email("ssar@nate.com")
-                .profileImg(null)
-                .build();
-        return new LoginUser(principal);
-    }
-
 }
