@@ -1,23 +1,37 @@
 package site.metacoding.blogv3.web;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.io.File;
+import java.nio.file.Files;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import site.metacoding.blogv3.domain.user.User;
+import site.metacoding.blogv3.domain.user.UserRepository;
 
 // RestController 테스트는 통합테스트로 하면 편하다. TestRestTemplate 사용
 // Controller 테스트는 WebMvc가 필요함(model 값 검증 같은 것을 할수 있다.).
@@ -25,12 +39,15 @@ import site.metacoding.blogv3.domain.user.User;
 // SpringbootTest + MockMvc -> 메모리에 다올림
 // WebMvcTest + MockMvc -> 컨트롤러 앞단만 메모리에 올리겠다는 것.
 
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 // @AutoConfigureMockMvc
 public class UserControllerTest {
 
     // @Autowired
     // private TestRestTemplate rt;
+    @Autowired
+    private UserRepository userRepository;
 
     // @Autowired
     private MockMvc mockMvc;
@@ -126,9 +143,22 @@ public class UserControllerTest {
     }
 
     public void join_테스트() {
+        // given
+
+        // when
+
+        // then
+        assertEquals("1", "1");
     }
 
-    public void passwordReset_테스트() {
+    @Test
+    public void passwordReset_테스트() throws Exception {
+        // given
+
+        // when
+
+        // then
+        assertEquals("1", "1");
     }
 
     @Test
@@ -138,9 +168,38 @@ public class UserControllerTest {
         // when
 
         // then
+        assertEquals("1", "1");
     }
 
-    public void profileImgUpdate_테스트() {
+    @WithUserDetails("ssar") // 내부에서 인증된 user를 사용하기 때문에 이 어노테이션 사용
+    @Test
+    public void profileImgUpdate_테스트() throws Exception {
+        // Authentication authentication =
+        // SecurityContextHolder.getContext().getAuthentication();;
+        // System.out.println(authentication.getPrincipal()); // user가 필요할때 사용
 
+        // given
+        File file = new File(
+                "E:\\green_workspace\\spring_lab\\blogv3\\src\\main\\resources\\static\\images\\dog.jpg");
+        MockMultipartFile image = new MockMultipartFile("profileImgFile", "dog.jpg", "image/jpeg",
+                Files.readAllBytes(file.toPath()));
+
+        // when
+        MockMultipartHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/s/api/user/profile-img");
+        builder.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+
+        ResultActions resultActions = mockMvc.perform(
+                builder.file(image));
+
+        // then
+        resultActions
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
     }
 }
