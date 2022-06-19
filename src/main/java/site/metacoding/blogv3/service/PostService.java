@@ -1,20 +1,12 @@
 package site.metacoding.blogv3.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import site.metacoding.blogv3.domain.Love.Love;
 import site.metacoding.blogv3.domain.Love.LoveRepository;
 import site.metacoding.blogv3.domain.category.Category;
@@ -32,6 +24,12 @@ import site.metacoding.blogv3.web.dto.love.LoveRespDto.PostDto;
 import site.metacoding.blogv3.web.dto.post.PostDetailRespDto;
 import site.metacoding.blogv3.web.dto.post.PostRespDto;
 import site.metacoding.blogv3.web.dto.post.PostWriteReqDto;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -158,7 +156,7 @@ public class PostService extends PostBasicService {
 
         // 1. UUID로 파일쓰고 경로 리턴 받기
         String thumnail = null;
-        if (postWriteReqDto.getThumnailFile() != null) { // thumnail이 공백이 들어옴
+        if (!(postWriteReqDto.getThumnailFile() == null || postWriteReqDto.getThumnailFile().isEmpty())) {
             thumnail = UtilFileUpload.write(uploadFolder, postWriteReqDto.getThumnailFile());
         }
 

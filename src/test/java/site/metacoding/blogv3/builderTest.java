@@ -1,8 +1,8 @@
 package site.metacoding.blogv3;
 
-import org.junit.jupiter.api.Test;
 
 import lombok.Data;
+import org.junit.jupiter.api.Test;
 
 @Data
 class Person {
