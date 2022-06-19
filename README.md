@@ -1,5 +1,8 @@
 # 스프링부트 JPA 블로그 V3 - GREEN Computer
 
+### 시큐리티 테스트 참고
+- https://tecoble.techcourse.co.kr/post/2020-09-30-spring-security-test/
+
 ### 1. 의존성
 - devtools
 - spring web (mvc)
@@ -73,16 +76,14 @@ updateDate
 ```
 
 ### 7. 기능정리
-- 댓글 (라이브러리 사용)
-- 좋아요
+- 단위테스트 - API 문서 자동생성
 - AOP 처리
-- 로그관리 (Log4j)
-- 단위테스트
 - 배포
-- 검색
-- 프로필 사진 변경
-- 글수정
-- 회원정보 수정
+- firebase fcm
+
+### 8. 추가 보완
+- 글수정 (직접)
+- 회원정보 수정 (직접)
 
 ### Gradle depenency update
 '''txt
@@ -108,5 +109,3 @@ ORDER BY p.id DESC
 LIMIT 0, 3;
 -- LIMIT (0*3), 3;
 ```
-
-### 로그변경 테스트

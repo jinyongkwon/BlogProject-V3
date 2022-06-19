@@ -158,7 +158,7 @@ public class PostService extends PostBasicService {
 
         // 1. UUID로 파일쓰고 경로 리턴 받기
         String thumnail = null;
-        if (postWriteReqDto.getThumnailFile() != null) {
+        if (postWriteReqDto.getThumnailFile() != null) { // thumnail이 공백이 들어옴
             thumnail = UtilFileUpload.write(uploadFolder, postWriteReqDto.getThumnailFile());
         }
 
